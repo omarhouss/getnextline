@@ -6,7 +6,7 @@
 /*   By: ohoussai <ohoussai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/14 18:22:53 by ohoussai          #+#    #+#             */
-/*   Updated: 2022/02/16 16:28:04 by ohoussai         ###   ########.fr       */
+/*   Updated: 2022/02/17 11:18:05 by ohoussai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,7 +52,7 @@ char	*get_line(int fd, char saved)
 	return (saved);
 }
 
-char	*bf_(char *s)
+char	*bf_line(char *s)
 {
 	int	i;
 
@@ -62,6 +62,28 @@ char	*bf_(char *s)
 	while (s[i] && s[i] != '\n')
 		i++;
 	s = ft_substr(s, 0, i + 1);
+}
+
+char	*af_line(char *saved)
+{
+	int		i;
+	char	*s;
+
+	if (!saved)
+		return (NULL);
+	i = 0;
+	while (saved[i])
+	{
+		if (saved[i] == '\n')
+		{
+			s = ft_substr(saved, i + 1, ft_strlen (saved));
+			free (saved);
+			return (s);
+		}
+		i++;
+		free (s);
+		return (NULL);
+	}
 }
 
 char	*get_next_line(int fd)
@@ -75,4 +97,6 @@ char	*get_next_line(int fd)
 	if (!s)
 		return (NULL);
 	line = bf_line(s);
+	s = af_line(s);
+	return (line);
 }
