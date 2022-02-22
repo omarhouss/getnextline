@@ -6,29 +6,29 @@
 /*   By: ohoussai <ohoussai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/14 18:22:53 by ohoussai          #+#    #+#             */
-/*   Updated: 2022/02/17 11:18:05 by ohoussai         ###   ########.fr       */
+/*   Updated: 2022/02/22 22:39:33 by ohoussai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
 
-char	*check_newline(char *s)
+int	check_line(char *s)
 {
 	int	i;
 
 	i = 0;
 	if (!s)
-		return (NULL);
+		return (0);
 	while (s[i])
 	{
 		if (s[i] == '\n')
-			return (0);
+			return (1);
 		i++;
 	}
 	return (0);
 }
 
-char	*get_line(int fd, char saved)
+char	*get_line(int fd, char *saved)
 {
 	int		i;
 	char	*s;
@@ -46,7 +46,7 @@ char	*get_line(int fd, char saved)
 			return (NULL);
 		}
 		s[i] = '\0';
-		saved = ft_strjoin (saved, s);
+		saved = ft_strjoin(saved, s);
 	}
 	free(s);
 	return (saved);
@@ -62,6 +62,7 @@ char	*bf_line(char *s)
 	while (s[i] && s[i] != '\n')
 		i++;
 	s = ft_substr(s, 0, i + 1);
+	return (s);
 }
 
 char	*af_line(char *saved)
@@ -69,21 +70,19 @@ char	*af_line(char *saved)
 	int		i;
 	char	*s;
 
-	if (!saved)
-		return (NULL);
 	i = 0;
 	while (saved[i])
 	{
 		if (saved[i] == '\n')
 		{
-			s = ft_substr(saved, i + 1, ft_strlen (saved));
+			s = ft_substr(saved, i + 1, ft_strlen(saved));
 			free (saved);
 			return (s);
 		}
 		i++;
-		free (s);
-		return (NULL);
 	}
+	free (saved);
+	return (NULL);
 }
 
 char	*get_next_line(int fd)
@@ -91,7 +90,7 @@ char	*get_next_line(int fd)
 	char		*line;
 	static char	*s;
 
-	if (fd < 0 && BUFFER_SIZE <= 0)
+	if (fd < 0 || BUFFER_SIZE <= 0)
 		return (0);
 	s = get_line (fd, s);
 	if (!s)

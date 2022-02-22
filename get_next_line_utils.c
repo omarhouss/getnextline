@@ -6,7 +6,7 @@
 /*   By: ohoussai <ohoussai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/16 11:43:09 by ohoussai          #+#    #+#             */
-/*   Updated: 2022/02/16 16:09:55 by ohoussai         ###   ########.fr       */
+/*   Updated: 2022/02/22 22:40:18 by ohoussai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,8 @@ int	ft_strlen(const char *s)
 	int	i;
 
 	i = 0;
+	if (!s)
+		return (0);
 	while (s[i])
 	{
 		i++;
@@ -24,20 +26,20 @@ int	ft_strlen(const char *s)
 	return (i);
 }
 
-char	*ft_strjoin(char const *s1, char const *s2)
+char	*ft_strjoin(char *s1, char *s2)
 {
 	char	*re;
 	int		i;
 	int		j;
 
-	if (!s1 || !s2)
+	if (!s1 && !s2)
 		return (NULL);
 	if (!s1)
 	{
 		s1 = malloc(1);
 		s1[0] = 0;
 	}
-	re = (char *)malloc (sizeof(char) * ft_strlen(s1) + 1 + ft_strlen(s2));
+	re = malloc (sizeof(char) * (ft_strlen(s1) + 1 + ft_strlen(s2)));
 	if (!re)
 		return (NULL);
 	i = 0;
@@ -45,34 +47,32 @@ char	*ft_strjoin(char const *s1, char const *s2)
 	while (s1[i])
 		re[i++] = s1[j++];
 	j = 0;
-	while (s2[i])
+	while (s2[j])
 		re[i++] = s2[j++];
 	re[i] = '\0';
 	free(s1);
 	return (re);
 }
 
-char	*ft_substr(char const *s, unsigned int start, size_t len)
+char	*ft_substr(char *s, int start, int len)
 {
-	size_t	i;
-	size_t	j;
-	char	*sub;
+	char	*x;
+	int		i;
+	int		j;
 
-	i = 0;
-	j = 0;
 	if (!s)
-		return (NULL);
+		return (0);
 	if (start >= ft_strlen(s))
 		len = 0;
-	while (i < len && s[i + start])
+	i = 0;
+	j = 0;
+	while (i < len && s[i])
 		i++;
-	sub = malloc(i + 1 * sizeof(char));
-	if (!sub)
+	x = malloc(i + 1);
+	if (!x)
 		return (NULL);
-	while (i > j)
-	{
-		sub[j++] = s[start++];
-	}
-	sub[i] = '\0';
-	return (sub);
+	while (j < i)
+		x[j++] = s[start++];
+	x[i] = '\0';
+	return (x);
 }
